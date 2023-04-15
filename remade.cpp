@@ -1,4 +1,4 @@
-namespace rewritten {
+namespace luau {
     inline void lua_pushnil(std::uintptr_t rL) {
         const std::uintptr_t top_ptr = rL + top;
         const std::uintptr_t topp = *reinterpret_cast<std::uintptr_t*>(top_ptr);
