@@ -2,6 +2,8 @@
 
 Remade luau inlined functions that is also remade by `Roblox` derived from `Lua C`. This is inlined functions for your own skiddy purposes noob enjoy!
 
+***This is still to be made. I will edit this when I am done with it!***
+
 # requirements?
 
 - Have valid lua state
