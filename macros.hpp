@@ -3,7 +3,7 @@
 these are 'macros' 
 */
 
-#include <cstdint>
+#include <cstdint>//call your shitty header file
 
 #define setnvalue(obj, x) \
     { \
@@ -13,7 +13,7 @@ these are 'macros'
     }
 
 #if LUA_VECTOR_SIZE == 4
-#define setvvalue(obj, x, y, z, w) \
+#define setvvalue(obj, x, y, z, w, a) \ /* trust me bro */
     { \
         std::uintptr_t i_o = reinterpret_cast<std::uintptr_t>(obj); \
         float* i_v = reinterpret_cast<float*>(i_o); \
@@ -69,3 +69,40 @@ these are 'macros'
         *reinterpret_cast<void**>(i_o) = reinterpret_cast<void*>(x); \
         *reinterpret_cast<unsigned char*>(i_o + sizeof(void*)) = LUA_TTHREAD; \
     }
+
+//you need GCObject and if you dont know what it is (skid moment) it is a garbage collect object
+#define setclvalue(L, obj, x) \
+    { \
+        std::uintptr_t i_o = reinterpret_cast<std::uintptr_t>(obj); \
+        reinterpret_cast<GCObject*>(i_o)->value.gc = reinterpret_cast<GCObject*>(x); \
+        reinterpret_cast<GCObject*>(i_o)->tt = LUA_TFUNCTION; \
+    }
+
+#define sethvalue(L, obj, x) \
+    { \
+        std::uintptr_t i_o = reinterpret_cast<std::uintptr_t>(obj); \
+        reinterpret_cast<GCObject*>(i_o)->value.gc = reinterpret_cast<GCObject*>(x); \
+        reinterpret_cast<GCObject*>(i_o)->tt = LUA_TTABLE; \
+    }
+
+#define setptvalue(L, obj, x) \
+    { \
+        std::uintptr_t i_o = reinterpret_cast<std::uintptr_t>(obj); \
+        reinterpret_cast<GCObject*>(i_o)->value.gc = reinterpret_cast<GCObject*>(x); \
+        reinterpret_cast<GCObject*>(i_o)->tt = LUA_TPROTO; \
+    }
+
+#define setupvalue(L, obj, x) \
+    { \
+        std::uintptr_t i_o = reinterpret_cast<std::uintptr_t>(obj); \
+        reinterpret_cast<GCObject*>(i_o)->value.gc = reinterpret_cast<GCObject*>(x); \
+        reinterpret_cast<GCObject*>(i_o)->tt = LUA_TUPVAL; \
+    }
+
+#define setobj(L, obj1, obj2) \
+    { \
+        std::uintptr_t o2 = reinterpret_cast<std::uintptr_t>(obj2); \
+        std::uintptr_t o1 = reinterpret_cast<std::uintptr_t>(obj1); \
+        *reinterpret_cast<TValue*>(o1) = *reinterpret_cast<TValue*>(o2); \
+    }
+
